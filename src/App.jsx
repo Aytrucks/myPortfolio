@@ -313,20 +313,20 @@ const About = () => (
         <p>
           {/* PLACEHOLDER: replace with your own bio */}
           I'm a software engineer finishing my MS in Computer Science at Arizona State University,
-          where I've spent the past few years building things at the intersection of full-stack
-          development and applied AI. I care about clean architecture, fast iteration, and code
-          that's actually maintainable six months later.
+          where I've spent the past few years building things regarding full-stack
+          development and AI. I spend my time trying to design good architecture and timeless code.
         </p>
         <p>
           {/* PLACEHOLDER: replace with your own background details */}
-          Outside of work, I'm interested in computational geometry, game mechanics, and
-          occasionally getting lost in a good algorithm problem. I've shipped projects ranging
-          from browser-based games to health-monitoring wearable apps to AI document pipelines.
+          Outside of work, I'm trying to get back into learning the piano and creating my own music.
+          And learning how to draw. I want to eventually make my own game so I want to have a decent baseline
+          of these skills when I get the time, ideally after I get a job and get more comfortable :D.
+          I try to read more nowadays to get away from my phone and social media.
         </p>
         <p>
           {/* PLACEHOLDER: replace with what you're looking for */}
-          I'm actively looking for new-grad software engineering roles — ideally somewhere I can
-          work on products that matter and grow with a strong engineering team. If that sounds
+          I'm actively looking for new-grad software engineering roles, somewhere I can
+          work on modern products and learn from an experienced team of devs. If that sounds
           like your company, I'd love to chat.
         </p>
       </div>
@@ -491,7 +491,7 @@ const Contact = () => {
 
             {/* PLACEHOLDER: replace href with your actual LinkedIn URL */}
             <a
-              href="https://linkedin.com/in/YOUR_PROFILE"
+              href="https://www.linkedin.com/in/anish-nalla-49094b244/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-sm font-medium group"
