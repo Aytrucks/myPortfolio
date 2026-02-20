@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /myPortfolio/
+
+User-agent: Googlebot
+Disallow: /myPortfolio/
