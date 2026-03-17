@@ -288,7 +288,7 @@ const Home = ({ setActiveTab }) => {
           </button>
           {/* PLACEHOLDER: replace href with actual hosted resume PDF URL */}
           <a
-            href="https://drive.google.com/file/d/14-iZXXKfoQIUIdGvght8EBabYxCfViuM/view"
+            href="https://drive.google.com/file/d/1UESTKJRQXdZSC_tbqyNvLx_IW7xpW6PZ/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             className="border border-black px-8 py-3 text-sm font-semibold tracking-wide hover:bg-black hover:text-white transition-colors w-full sm:w-auto text-center"
