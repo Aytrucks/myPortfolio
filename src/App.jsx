@@ -29,6 +29,13 @@ const MailIcon = () => (
   </svg>
 )
 
+const ArrowLeftIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4" aria-hidden="true">
+    <line x1="19" y1="12" x2="5" y2="12" />
+    <polyline points="12 19 5 12 12 5" />
+  </svg>
+)
+
 const MenuIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
     <line x1="3" y1="6" x2="21" y2="6" />
@@ -46,7 +53,7 @@ const XIcon = () => (
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-const NAV_TABS = ['Home', 'About', 'Projects', 'Experience', 'Contact']
+const NAV_TABS = ['Home', 'About', 'Projects', 'Mini-Labs', 'Experience', 'Contact']
 
 const SKILLS = {
   Languages: ['Python', 'C++', 'JavaScript', 'Java'],
@@ -57,6 +64,7 @@ const SKILLS = {
 
 const PROJECTS = [
   {
+    slug: 'asu-auto-enroller',
     title: 'ASU Auto Enroller',
     description:
       'Monitors real-time course availability and manages student waitlists with async API handling. Features bulk-write DB optimization to minimize write overhead under load.',
@@ -65,6 +73,7 @@ const PROJECTS = [
     demo: '#', // placeholder
   },
   {
+    slug: 'ai-invoice-scanner',
     title: 'AI Invoice Scanner',
     description:
       'Full-stack app that extracts structured data from invoice images using Google Gemini. Validates extracted fields and exports clean Excel reports.',
@@ -73,6 +82,7 @@ const PROJECTS = [
     demo: '#', // placeholder
   },
   {
+    slug: 'pokebee',
     title: 'PokeBee',
     description:
       'Wordle-inspired Pokémon guessing game with attribute-based clue feedback. Backed by a RESTful API serving Pokédex data from a MongoDB collection.',
@@ -81,6 +91,7 @@ const PROJECTS = [
     demo: '#', // placeholder
   },
   {
+    slug: '3d-mesh-subdivision',
     title: '3D Mesh Subdivision',
     description:
       'Implements a smooth mesh refinement algorithm adapted from academic research into production-ready C++ code. Uses MeshLib for geometry processing.',
@@ -89,6 +100,59 @@ const PROJECTS = [
     demo: '#', // placeholder
   },
 ]
+
+const LABS = [
+  {
+    slug: 'chatroom',
+    title: 'Chatroom',
+    description:
+      'Real-time multi-user chat built to get hands-on with networking fundamentals — TCP sockets, connection handling, and message broadcasting.',
+    stack: ['Python', 'Sockets'],
+    github: 'https://github.com/Aytrucks',
+    demo: '#',
+  },
+]
+
+// Dev log entries keyed by slug. Each entry has a date, body text, and optional
+// screenshot paths (place images in /public/devlogs/<slug>/).
+const DEV_LOGS = {
+  'asu-auto-enroller': {
+    title: 'ASU Auto Enroller',
+    type: 'project',
+    entries: [],
+    screenshots: [],
+  },
+  'ai-invoice-scanner': {
+    title: 'AI Invoice Scanner',
+    type: 'project',
+    entries: [],
+    screenshots: [],
+  },
+  pokebee: {
+    title: 'PokeBee',
+    type: 'project',
+    entries: [],
+    screenshots: [],
+  },
+  '3d-mesh-subdivision': {
+    title: '3D Mesh Subdivision',
+    type: 'project',
+    entries: [],
+    screenshots: [],
+  },
+  myalyce: {
+    title: 'Software Developer (Capstone) — MyAlyce',
+    type: 'experience',
+    entries: [],
+    screenshots: [],
+  },
+  chatroom: {
+    title: 'Chatroom',
+    type: 'lab',
+    entries: [],
+    screenshots: [],
+  },
+}
 
 // ─── Shared primitives ────────────────────────────────────────────────────────
 
@@ -109,12 +173,13 @@ const Badge = ({ label }) => (
 // className     — applied to the outer wrapper (use for margins, grid span, etc.)
 // innerClassName — applied to the visible white card (use for padding, flex, etc.)
 
-const CardShell = ({ children, className = '', innerClassName = '' }) => (
+const CardShell = ({ children, className = '', innerClassName = '', onClick }) => (
   <div className={`relative group flex flex-col ${className}`}>
     {/* Solid black shadow — same footprint as card, offset 6 px down-right */}
     <div className="absolute inset-0 bg-black translate-x-[6px] translate-y-[6px]" />
     {/* Foreground white card */}
     <div
+      onClick={onClick}
       className={`relative z-10 flex-1 bg-white border border-black
         transition-transform duration-200 ease-out
         group-hover:-translate-x-[3px] group-hover:-translate-y-[3px]
@@ -352,9 +417,11 @@ const About = () => (
 
 // ─── Projects ─────────────────────────────────────────────────────────────────
 
-const ProjectCard = ({ project }) => (
-  <CardShell innerClassName="p-6 flex flex-col gap-4">
-    <h3 className="font-bold text-base tracking-tight">{project.title}</h3>
+const ProjectCard = ({ project, onOpenLog }) => (
+  <CardShell className="cursor-pointer" innerClassName="p-6 flex flex-col gap-4 group/card" onClick={onOpenLog}>
+    <h3 className="font-bold text-base tracking-tight group-hover/card:underline underline-offset-2">
+      {project.title}
+    </h3>
     <p className="text-sm leading-relaxed text-black/70 flex-1">{project.description}</p>
     <div className="flex flex-wrap gap-1.5">
       {project.stack.map((t) => (
@@ -368,6 +435,7 @@ const ProjectCard = ({ project }) => (
         rel="noopener noreferrer"
         className="flex items-center gap-1.5 text-xs font-medium hover:opacity-50 transition-opacity"
         aria-label={`${project.title} GitHub`}
+        onClick={(e) => e.stopPropagation()}
       >
         <GitHubIcon />
         <span>GitHub</span>
@@ -379,6 +447,7 @@ const ProjectCard = ({ project }) => (
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-xs font-medium hover:opacity-50 transition-opacity"
           aria-label={`${project.title} live demo`}
+          onClick={(e) => e.stopPropagation()}
         >
           <ExternalLinkIcon />
           <span>Live Demo</span>
@@ -388,12 +457,26 @@ const ProjectCard = ({ project }) => (
   </CardShell>
 )
 
-const Projects = () => (
+const Projects = ({ onOpenLog }) => (
   <section className="min-h-screen px-6 pt-28 pb-20 max-w-5xl mx-auto">
     <h2 className="text-xs tracking-[0.3em] uppercase text-black/40 mb-10">Projects</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-2 pr-2">
       {PROJECTS.map((p) => (
-        <ProjectCard key={p.title} project={p} />
+        <ProjectCard key={p.title} project={p} onOpenLog={() => onOpenLog(p.slug)} />
+      ))}
+    </div>
+  </section>
+)
+
+// ─── Mini-Labs ────────────────────────────────────────────────────────────────
+
+const MiniLabs = ({ onOpenLog }) => (
+  <section className="min-h-screen px-6 pt-28 pb-20 max-w-5xl mx-auto">
+    <h2 className="text-xs tracking-[0.3em] uppercase text-black/40 mb-2">Mini-Labs</h2>
+    <p className="text-sm text-black/40 mb-10">Smaller experiments and learning builds — things made to figure something out.</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pb-2 pr-2">
+      {LABS.map((p) => (
+        <ProjectCard key={p.title} project={p} onOpenLog={() => onOpenLog(p.slug)} />
       ))}
     </div>
   </section>
@@ -401,15 +484,15 @@ const Projects = () => (
 
 // ─── Experience ───────────────────────────────────────────────────────────────
 
-const Experience = () => (
+const Experience = ({ onOpenLog }) => (
   <section className="min-h-screen px-6 pt-28 pb-20 max-w-5xl mx-auto">
     <h2 className="text-xs tracking-[0.3em] uppercase text-black/40 mb-10">Experience</h2>
 
     {/* Work */}
-    <CardShell className="mb-10" innerClassName="p-8">
+    <CardShell className="mb-10 cursor-pointer" innerClassName="p-8 group/card" onClick={() => onOpenLog('myalyce')}>
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1 mb-5">
         <div>
-          <h3 className="font-bold text-base">Software Developer (Capstone)</h3>
+          <h3 className="font-bold text-base group-hover/card:underline underline-offset-2">Software Developer (Capstone)</h3>
           <p className="text-sm text-black/60">MyAlyce · Tempe, AZ</p>
         </div>
         <p className="text-xs font-medium tracking-wide text-black/40 sm:text-right whitespace-nowrap">
@@ -558,12 +641,90 @@ const Contact = () => {
   )
 }
 
+// ─── DevLog ───────────────────────────────────────────────────────────────────
+
+const DevLog = ({ slug, onBack }) => {
+  const log = DEV_LOGS[slug]
+
+  return (
+    <section className="min-h-screen px-6 pt-28 pb-20 max-w-3xl mx-auto">
+      <button
+        onClick={onBack}
+        className="flex items-center gap-2 text-xs font-medium text-black/40 hover:text-black transition-colors mb-10 tracking-wide uppercase"
+      >
+        <ArrowLeftIcon />
+        Back
+      </button>
+
+      <p className="text-xs tracking-[0.3em] uppercase text-black/40 mb-2">
+        {log.type === 'project' ? 'Project' : 'Experience'} · Dev Log
+      </p>
+      <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-12">{log.title}</h1>
+
+      {log.entries.length === 0 && log.screenshots.length === 0 ? (
+        <div className="border border-black/20 p-12 text-center">
+          <p className="text-sm text-black/40 tracking-wide">
+            No entries yet — check back soon.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-16">
+          {/* Screenshots */}
+          {log.screenshots.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-black/40 mb-6">
+                Screenshots
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {log.screenshots.map((src, i) => (
+                  <div key={i} className="border border-black overflow-hidden">
+                    <img src={src} alt={`${log.title} screenshot ${i + 1}`} className="w-full h-auto block" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Log entries */}
+          {log.entries.length > 0 && (
+            <div>
+              <p className="text-xs font-semibold tracking-widest uppercase text-black/40 mb-6">
+                Log
+              </p>
+              <div className="space-y-12">
+                {log.entries.map((entry, i) => (
+                  <div key={i} className="border-t border-black/10 pt-8">
+                    {entry.date && (
+                      <p className="text-xs font-medium tracking-widest uppercase text-black/30 mb-4">
+                        {entry.date}
+                      </p>
+                    )}
+                    {entry.title && (
+                      <h2 className="text-lg font-bold tracking-tight mb-3">{entry.title}</h2>
+                    )}
+                    <div className="text-sm leading-relaxed text-black/80 space-y-4">
+                      {entry.body.split('\n\n').map((para, j) => (
+                        <p key={j}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  )
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 const SECTION_MAP = {
   Home,
   About,
   Projects,
+  'Mini-Labs': MiniLabs,
   Experience,
   Contact,
 }
@@ -571,9 +732,11 @@ const SECTION_MAP = {
 export default function App() {
   const [activeTab, setActiveTab] = useState('Home')
   const [renderKey, setRenderKey] = useState(0)
+  const [activeDetail, setActiveDetail] = useState(null) // slug string or null
   const prevTab = useRef(activeTab)
 
   const handleSetTab = (tab) => {
+    setActiveDetail(null)
     if (tab !== prevTab.current) {
       prevTab.current = tab
       setActiveTab(tab)
@@ -582,15 +745,34 @@ export default function App() {
     }
   }
 
+  const handleOpenLog = (slug) => {
+    setActiveDetail(slug)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const handleCloseLog = () => {
+    setActiveDetail(null)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   const ActiveSection = SECTION_MAP[activeTab]
 
   return (
     <div className="min-h-screen bg-white text-black font-sans">
       <Navbar activeTab={activeTab} setActiveTab={handleSetTab} />
       <main>
-        <FadeSection key={renderKey} active>
-          <ActiveSection setActiveTab={handleSetTab} />
-        </FadeSection>
+        {activeDetail ? (
+          <FadeSection key={activeDetail} active>
+            <DevLog slug={activeDetail} onBack={handleCloseLog} />
+          </FadeSection>
+        ) : (
+          <FadeSection key={renderKey} active>
+            <ActiveSection
+              setActiveTab={handleSetTab}
+              onOpenLog={handleOpenLog}
+            />
+          </FadeSection>
+        )}
       </main>
 
       {/* Footer */}

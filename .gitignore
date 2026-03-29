@@ -3,3 +3,4 @@ instructions*
 docs*
 node_modules
 dist
+*.stackdump
